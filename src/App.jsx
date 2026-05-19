@@ -1,16 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import Portfolio from './Portfolio'
-import WebsiteDesign from './pages/WebsiteDesign'
-import LogoDesign from './pages/LogoDesign'
-import LandingPageDesign from './pages/LandingPageDesign'
-import WebsiteDevelopment from './pages/WebsiteDevelopment'
-import SocialMedia from './pages/SocialMedia'
-import SEO from './pages/SEO'
-import GoogleAds from './pages/GoogleAds'
+import ServiceTemplate from './pages/ServiceTemplate'
+import LegalTemplate from './pages/LegalTemplate'
 import Contact from './pages/Contact'
-import Privacy from './pages/Privacy'
-import Terms from './pages/Terms'
 import {
   Star,
   ChevronDown,
@@ -43,23 +36,23 @@ const navItems = [
   {
     label: 'Design',
     children: [
-      { label: 'Website Design', href: '/website-design' },
-      { label: 'Logo Design', href: '/logo-design' },
-      { label: 'Landing Page Design', href: '/landing-page-design' },
+      { label: 'Website Design', href: '/services/website-design' },
+      { label: 'Logo Design', href: '/services/logo-design' },
+      { label: 'Landing Page Design', href: '/services/landing-page-design' },
     ],
   },
   {
     label: 'Development',
     children: [
-      { label: 'Website Development', href: '/website-development' },
+      { label: 'Website Development', href: '/services/website-development' },
     ],
   },
   {
     label: 'Marketing',
     children: [
-      { label: 'Social Media', href: '/social-media' },
-      { label: 'SEO', href: '/seo' },
-      { label: 'Google Ads', href: '/google-ads' },
+      { label: 'Social Media', href: '/services/social-media' },
+      { label: 'SEO', href: '/services/seo' },
+      { label: 'Google Ads', href: '/services/google-ads' },
     ],
   },
   { label: 'Portfolio', children: null, href: '/portfolio' },
@@ -684,16 +677,9 @@ export default function App() {
             </>
           } />
           <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/website-design" element={<WebsiteDesign setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/logo-design" element={<LogoDesign setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/landing-page-design" element={<LandingPageDesign setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/website-development" element={<WebsiteDevelopment setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/social-media" element={<SocialMedia setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/seo" element={<SEO setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/google-ads" element={<GoogleAds setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/services/:slug" element={<ServiceTemplate setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/legal/:slug" element={<LegalTemplate />} />
           <Route path="/contact" element={<Contact setQuoteOpen={setQuoteOpen} />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
         </Routes>
 
         {/* ── FOOTER ── */}
@@ -754,13 +740,13 @@ export default function App() {
                 <h4 className="text-sm font-semibold dark:text-white mb-4 uppercase tracking-wider">Services</h4>
                 <ul className="space-y-2.5">
                   {[
-                    { label: 'Website Design', href: '/website-design' },
-                    { label: 'Website Development', href: '/website-development' },
-                    { label: 'Landing Page Design', href: '/landing-page-design' },
-                    { label: 'Logo & Branding', href: '/logo-design' },
-                    { label: 'SEO Services', href: '/seo' },
-                    { label: 'Social Media', href: '/social-media' },
-                    { label: 'Google Ads', href: '/google-ads' },
+                    { label: 'Website Design', href: '/services/website-design' },
+                    { label: 'Website Development', href: '/services/website-development' },
+                    { label: 'Landing Page Design', href: '/services/landing-page-design' },
+                    { label: 'Logo & Branding', href: '/services/logo-design' },
+                    { label: 'SEO Services', href: '/services/seo' },
+                    { label: 'Social Media', href: '/services/social-media' },
+                    { label: 'Google Ads', href: '/services/google-ads' },
                   ].map((item) => (
                     <li key={item.href}>
                       <Link to={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
@@ -779,8 +765,8 @@ export default function App() {
                     { label: 'Home', href: '/' },
                     { label: 'Our Portfolio', href: '/portfolio' },
                     { label: 'Contact Us', href: '/contact' },
-                    { label: 'Privacy Policy', href: '/privacy' },
-                    { label: 'Terms of Service', href: '/terms' },
+                    { label: 'Privacy Policy', href: '/legal/privacy' },
+                    { label: 'Terms of Service', href: '/legal/terms' },
                   ].map((item) => (
                     <li key={item.href}>
                       <Link to={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
