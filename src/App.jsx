@@ -1,5 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import Portfolio from './Portfolio'
+import WebsiteDesign from './pages/WebsiteDesign'
+import LogoDesign from './pages/LogoDesign'
+import LandingPageDesign from './pages/LandingPageDesign'
+import WebsiteDevelopment from './pages/WebsiteDevelopment'
+import SocialMedia from './pages/SocialMedia'
+import SEO from './pages/SEO'
+import GoogleAds from './pages/GoogleAds'
+import Contact from './pages/Contact'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 import {
   Star,
   ChevronDown,
@@ -22,7 +33,7 @@ import {
   Globe,
   Award,
   Briefcase,
-  Send,
+  Send
 } from 'lucide-react'
 
 /* ────────────────────────────────────────
@@ -32,38 +43,27 @@ const navItems = [
   {
     label: 'Design',
     children: [
-      'Website Design',
-      'Logo Design',
-      'UI/UX Design',
-      'Landing Page Design',
-      'Graphic Design',
-      'Responsive Design',
+      { label: 'Website Design', href: '/website-design' },
+      { label: 'Logo Design', href: '/logo-design' },
+      { label: 'Landing Page Design', href: '/landing-page-design' },
     ],
   },
   {
     label: 'Development',
     children: [
-      'WordPress Development',
-      'Custom React Development',
-      'Shopify / E-commerce',
-      'PHP Web Development',
-      'Mobile App Development',
-      'CMS Development',
+      { label: 'Website Development', href: '/website-development' },
     ],
   },
   {
     label: 'Marketing',
     children: [
-      'SEO Services',
-      'Digital Marketing',
-      'Social Media Marketing',
-      'Content Marketing',
-      'Google Ads (PPC)',
-      'Local SEO',
+      { label: 'Social Media', href: '/social-media' },
+      { label: 'SEO', href: '/seo' },
+      { label: 'Google Ads', href: '/google-ads' },
     ],
   },
-  { label: 'Portfolio', children: null, href: '#portfolio' },
-  { label: 'Contact', children: null, href: '#contact' },
+  { label: 'Portfolio', children: null, href: '/portfolio' },
+  { label: 'Contact', children: null, href: '/contact' },
 ]
 
 /* ────────────────────────────────────────
@@ -93,11 +93,10 @@ function DesignOverlay() {
             (step, i) => (
               <div key={step} className="flex items-center gap-3">
                 <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                    i === 0
-                      ? 'bg-purple-500 text-white'
-                      : 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-gray-500'
-                  }`}
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${i === 0
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-gray-500'
+                    }`}
                 >
                   {i === 0 ? <Check className="w-3 h-3" /> : i + 1}
                 </div>
@@ -209,15 +208,7 @@ const overlays = {
   support: SupportOverlay,
 }
 
-/* ────────────────────────────────────────
-   STATS DATA
-   ──────────────────────────────────────── */
-const stats = [
-  { value: '500+', label: 'Projects Delivered', icon: Briefcase },
-  { value: '6+', label: 'Years Experience', icon: Award },
-  { value: '15+', label: 'Countries Served', icon: Globe },
-  { value: '98%', label: 'Client Satisfaction', icon: Users },
-]
+
 
 /* ────────────────────────────────────────
    DROPDOWN COMPONENT
@@ -235,9 +226,9 @@ function NavDropdown({ item, isOpen, onToggle, onClose }) {
 
   if (!item.children) {
     return (
-      <a href={item.href || '#'} className="text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+      <Link to={item.href || '#'} className="text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
         {item.label}
-      </a>
+      </Link>
     )
   }
 
@@ -253,14 +244,15 @@ function NavDropdown({ item, isOpen, onToggle, onClose }) {
       {isOpen && (
         <div className="animate-dropdown absolute top-full left-0 mt-2 w-56 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-xl py-2 z-50">
           {item.children.map((child) => (
-            <a
-              key={child}
-              href="#"
-              className="flex items-center justify-between px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+            <Link
+              key={child.label}
+              to={child.href}
+              onClick={onClose}
+              className="flex items-center justify-between px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors group"
             >
-              {child}
+              {child.label}
               <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100" />
-            </a>
+            </Link>
           ))}
         </div>
       )}
@@ -305,7 +297,7 @@ function QuoteForm({ isOpen, onClose }) {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
               <input
                 type="tel"
-                placeholder="+91 98765 43210"
+                placeholder="+91 78548 27613"
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all"
               />
             </div>
@@ -346,32 +338,26 @@ function QuoteForm({ isOpen, onClose }) {
 /* ────────────────────────────────────────
    MAIN APP
    ──────────────────────────────────────── */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('design')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
   const [quoteOpen, setQuoteOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.location.hash === '#portfolio' ? 'portfolio' : 'home'
-    }
-    return 'home'
-  })
+
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
     }
     return 'light'
   })
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      setCurrentPage(window.location.hash === '#portfolio' ? 'portfolio' : 'home')
-      window.scrollTo(0, 0)
-    }
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -397,40 +383,28 @@ export default function App() {
 
   return (
     <div className="bg-white dark:bg-zinc-950 min-h-screen transition-colors duration-300">
+      <ScrollToTop />
 
-      {/* ── TOP INFO BAR ── */}
-      <div className="bg-black dark:bg-zinc-900 text-white text-xs">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-4 md:gap-6">
-            <a href="tel:+919876543210" className="flex items-center gap-1.5 hover:text-gray-300 transition-colors">
-              <Phone className="w-3 h-3" /> +91 98765 43210
-            </a>
-            <a href="mailto:hello@prayushstudios.com" className="hidden sm:flex items-center gap-1.5 hover:text-gray-300 transition-colors">
-              <Mail className="w-3 h-3" /> hello@prayushstudios.com
-            </a>
-          </div>
-          <button
-            onClick={() => setQuoteOpen(true)}
-            className="bg-white text-black px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-          >
-            Free Website Audit
-          </button>
-        </div>
-      </div>
+
 
       <div className="max-w-7xl mx-auto relative z-50">
         {/* ── NAVIGATION ── */}
         <nav
-          className="animate-fade-in-up px-6 py-4 flex items-center justify-between relative z-50"
+          className="animate-fade-in-up px-6 py-4 grid grid-cols-2 lg:grid-cols-3 items-center relative z-50"
           style={{ animationDelay: '0.1s', opacity: 0 }}
         >
-          <div className="flex items-center gap-2">
-            <Star className="w-5 h-5 fill-black stroke-black dark:fill-white dark:stroke-white" />
-            <span className="text-lg font-semibold dark:text-white">Prayush Studios</span>
-          </div>
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 justify-self-start cursor-pointer hover:opacity-90 transition-opacity">
+            <img
+              src="/logo.jpeg"
+              alt="Prayush Studios"
+              className="h-9 w-auto dark:invert dark:hue-rotate-180"
+            />
+            <span className="text-lg font-semibold tracking-tight dark:text-white">Prayush Studios</span>
+          </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center justify-center gap-8 justify-self-center">
             {navItems.map((item) => (
               <NavDropdown
                 key={item.label}
@@ -443,7 +417,7 @@ export default function App() {
           </div>
 
           {/* Desktop Right */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4 justify-self-end">
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
@@ -455,16 +429,16 @@ export default function App() {
                 <Moon className="w-5 h-5 text-gray-700 hover:text-black" />
               )}
             </button>
-            <button
-              onClick={() => setQuoteOpen(true)}
-              className="bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer"
+            <Link
+              to="/contact"
+              className="bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer inline-block"
             >
               Get Free Consultation
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-3 lg:hidden">
+          <div className="flex items-center gap-3 lg:hidden justify-self-end">
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
@@ -497,256 +471,230 @@ export default function App() {
                     </summary>
                     <div className="pl-4 pb-2 space-y-1">
                       {item.children.map((child) => (
-                        <a key={child} href="#" className="block py-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
-                          {child}
-                        </a>
+                        <Link key={child.label} to={child.href} onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
+                          {child.label}
+                        </Link>
                       ))}
                     </div>
                   </details>
                 ) : (
-                  <a href={item.href || '#'} onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white">
+                  <Link to={item.href || '#'} onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white">
                     {item.label}
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}
-            <button
-              onClick={() => { setQuoteOpen(true); setMobileMenuOpen(false) }}
-              className="w-full bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer mt-2"
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center w-full bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer mt-2"
             >
               Get Free Consultation
-            </button>
+            </Link>
           </div>
         )}
 
         {/* ── MAIN CONTENT ── */}
-        {currentPage === 'home' ? (
-          <>
-            {/* ── HERO SECTION ── */}
-        <section className="px-6 pt-20 pb-16 max-w-7xl mx-auto text-center">
-          {/* Trust Badge */}
-          <div
-            className="animate-fade-in-up inline-flex items-center gap-2 mb-8"
-            style={{ animationDelay: '0.2s', opacity: 0 }}
-          >
-            <div className="w-6 h-6 border border-gray-300 dark:border-zinc-700 rounded flex items-center justify-center">
-              <Check className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
-            </div>
-            <span className="text-sm font-medium text-black dark:text-white">
-              Trusted by 500+ Businesses Across India
-            </span>
-          </div>
+        <Routes>
+          <Route path="/" element={
+            <>
+              {/* ── HERO SECTION ── */}
+              <section className="px-6 pt-20 pb-16 max-w-7xl mx-auto text-center">
+                {/* Trust Badge */}
+                <div
+                  className="animate-fade-in-up inline-flex items-center gap-2 mb-8"
+                  style={{ animationDelay: '0.2s', opacity: 0 }}
+                >
+                  <div className="w-6 h-6 border border-gray-300 dark:border-zinc-700 rounded flex items-center justify-center">
+                    <Check className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
+                  </div>
+                  <span className="text-sm font-medium text-black dark:text-white">
+                    Trusted by 500+ Businesses Across India
+                  </span>
+                </div>
 
-          {/* Main Heading */}
-          <h1
-            className="animate-fade-in-up text-5xl md:text-6xl lg:text-[72px] font-normal leading-[1.1] tracking-tight mb-5"
-            style={{ animationDelay: '0.3s', opacity: 0 }}
-          >
-            <span className="block dark:text-white">Websites That Drive Growth</span>
-            <span className="block bg-gradient-to-r from-black via-gray-500 to-gray-400 dark:from-white dark:via-gray-400 dark:to-gray-500 bg-clip-text text-transparent">
-              & Deliver Real Results.
-            </span>
-          </h1>
+                {/* Main Heading */}
+                <h1
+                  className="animate-fade-in-up text-5xl md:text-6xl lg:text-[72px] font-normal leading-[1.1] tracking-tight mb-5"
+                  style={{ animationDelay: '0.3s', opacity: 0 }}
+                >
+                  <span className="block dark:text-white">Websites That Drive Growth</span>
+                  <span className="block bg-gradient-to-r from-black via-gray-500 to-gray-400 dark:from-white dark:via-gray-400 dark:to-gray-500 bg-clip-text text-transparent">
+                    & Deliver Real Results.
+                  </span>
+                </h1>
 
-          {/* Subheading */}
-          <p
-            className="animate-fade-in-up text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed"
-            style={{ animationDelay: '0.4s', opacity: 0 }}
-          >
-            From web design and development to SEO and digital marketing — we help small
-            businesses build a powerful online presence that converts visitors into customers.
-          </p>
+                {/* Subheading */}
+                <p
+                  className="animate-fade-in-up text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed"
+                  style={{ animationDelay: '0.4s', opacity: 0 }}
+                >
+                  From web design and development to SEO and digital marketing — we help small
+                  businesses build a powerful online presence that converts visitors into customers.
+                </p>
 
-          {/* Dual CTAs */}
-          <div
-            className="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center gap-3 mb-12"
-            style={{ animationDelay: '0.5s', opacity: 0 }}
-          >
-            <button
-              onClick={() => setQuoteOpen(true)}
-              className="bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer flex items-center gap-2"
-            >
-              Get Free Consultation
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <a
-              href="#"
-              className="border border-gray-300 dark:border-zinc-700 text-black dark:text-white px-8 py-3 rounded-full text-base font-medium hover:bg-gray-50 dark:hover:bg-zinc-900 transition-colors flex items-center gap-2"
-            >
-              View Our Work
-            </a>
-          </div>
-
-          {/* Tab Bar */}
-          <div
-            className="animate-fade-in-up flex justify-center mb-8"
-            style={{ animationDelay: '0.6s', opacity: 0 }}
-          >
-            {/* Mobile Tabs */}
-            <div className="md:hidden bg-gray-100 dark:bg-zinc-900 rounded-lg p-1 grid grid-cols-2 gap-1 w-full max-w-sm">
-              {tabs.map((tab) => {
-                const Icon = tab.icon
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
-                      activeTab === tab.id
-                        ? 'bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm'
-                        : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-                    }`}
+                {/* Dual CTAs */}
+                <div
+                  className="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center gap-3 mb-12"
+                  style={{ animationDelay: '0.5s', opacity: 0 }}
+                >
+                  <Link
+                    to="/contact"
+                    className="bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-full text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer inline-flex items-center gap-2"
                   >
-                    <Icon className="w-4 h-4" />
-                    {tab.label}
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Desktop Tabs */}
-            <div className="hidden md:flex items-center bg-gray-100 dark:bg-zinc-900 rounded-lg p-1">
-              {tabs.map((tab, index) => {
-                const Icon = tab.icon
-                return (
-                  <div key={tab.id} className="flex items-center">
-                    <button
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
-                        activeTab === tab.id
-                          ? 'bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm'
-                          : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      {tab.label}
-                    </button>
-                    {index < tabs.length - 1 && (
-                      <div className="w-px h-5 bg-gray-300 dark:bg-zinc-700 mx-1"></div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Video + Overlay */}
-          <div
-            className="animate-fade-in-up relative rounded-3xl overflow-hidden h-[400px] md:h-[500px]"
-            style={{ animationDelay: '0.7s', opacity: 0 }}
-          >
-            <video
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_165750_358b1e72-c921-48b7-aaac-f200994f32fb.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-            <ActiveOverlay />
-          </div>
-        </section>
-
-        {/* ── STATS COUNTER ── */}
-        <section className="px-6 py-16 max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {stats.map((stat, i) => {
-              const Icon = stat.icon
-              return (
-                <div
-                  key={stat.label}
-                  className="animate-count-up text-center p-6 rounded-2xl bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800"
-                  style={{ animationDelay: `${0.1 + i * 0.1}s`, opacity: 0 }}
-                >
-                  <div className="w-10 h-10 rounded-full bg-black dark:bg-white flex items-center justify-center mx-auto mb-3">
-                    <Icon className="w-5 h-5 text-white dark:text-black" />
-                  </div>
-                  <p className="text-3xl md:text-4xl font-semibold text-black dark:text-white mb-1">{stat.value}</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
+                    Get Free Consultation
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <a
+                    href="#"
+                    className="border border-gray-300 dark:border-zinc-700 text-black dark:text-white px-8 py-3 rounded-full text-base font-medium hover:bg-gray-50 dark:hover:bg-zinc-900 transition-colors flex items-center gap-2"
+                  >
+                    View Our Work
+                  </a>
                 </div>
-              )
-            })}
-          </div>
-        </section>
 
-        {/* ── SERVICE BENEFITS ── */}
-        <section className="px-6 py-16 max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2
-              className="animate-fade-in-up text-3xl md:text-4xl font-normal tracking-tight dark:text-white mb-4"
-              style={{ animationDelay: '0.1s', opacity: 0 }}
-            >
-              Why Businesses Choose Us
-            </h2>
-            <p
-              className="animate-fade-in-up text-gray-600 dark:text-gray-400 max-w-xl mx-auto"
-              style={{ animationDelay: '0.2s', opacity: 0 }}
-            >
-              We don't just build websites — we build digital growth engines.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Built to Convert',
-                desc: 'Every design decision is made to turn visitors into paying customers.',
-                icon: TrendingUp,
-              },
-              {
-                title: 'Fast & Mobile-First',
-                desc: 'Lightning-fast load times and pixel-perfect on every device and screen.',
-                icon: Globe,
-              },
-              {
-                title: 'SEO-Ready Structure',
-                desc: 'Built with clean code and optimised metadata to rank high on Google.',
-                icon: Award,
-              },
-              {
-                title: 'Affordable Plans',
-                desc: 'Enterprise-quality websites at prices that work for small businesses.',
-                icon: Briefcase,
-              },
-            ].map((benefit, i) => {
-              const Icon = benefit.icon
-              return (
+                {/* Tab Bar */}
                 <div
-                  key={benefit.title}
-                  className="animate-fade-in-up p-6 rounded-2xl border border-gray-100 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-600 transition-colors group"
-                  style={{ animationDelay: `${0.1 + i * 0.1}s`, opacity: 0 }}
+                  className="animate-fade-in-up flex justify-center mb-8"
+                  style={{ animationDelay: '0.6s', opacity: 0 }}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-zinc-800 flex items-center justify-center mb-4 group-hover:bg-black dark:group-hover:bg-white transition-colors">
-                    <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-white dark:group-hover:text-black transition-colors" />
+                  {/* Mobile Tabs */}
+                  <div className="md:hidden bg-gray-100 dark:bg-zinc-900 rounded-lg p-1 grid grid-cols-2 gap-1 w-full max-w-sm">
+                    {tabs.map((tab) => {
+                      const Icon = tab.icon
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all cursor-pointer ${activeTab === tab.id
+                            ? 'bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm'
+                            : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                            }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                          {tab.label}
+                        </button>
+                      )
+                    })}
                   </div>
-                  <h3 className="text-base font-semibold dark:text-white mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{benefit.desc}</p>
+
+                  {/* Desktop Tabs */}
+                  <div className="hidden md:flex items-center bg-gray-100 dark:bg-zinc-900 rounded-lg p-1">
+                    {tabs.map((tab, index) => {
+                      const Icon = tab.icon
+                      return (
+                        <div key={tab.id} className="flex items-center">
+                          <button
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all cursor-pointer ${activeTab === tab.id
+                              ? 'bg-white dark:bg-zinc-800 text-black dark:text-white shadow-sm'
+                              : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                              }`}
+                          >
+                            <Icon className="w-4 h-4" />
+                            {tab.label}
+                          </button>
+                          {index < tabs.length - 1 && (
+                            <div className="w-px h-5 bg-gray-300 dark:bg-zinc-700 mx-1"></div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
-              )
-            })}
-          </div>
-        </section>
 
-        {/* ── CLIENT TRUST LOGOS ── */}
-        <section className="px-6 py-12 max-w-7xl mx-auto">
-          <p className="text-center text-xs tracking-widest text-gray-400 dark:text-zinc-600 uppercase mb-8 font-medium">
-            Trusted by businesses everywhere
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-14">
-            {['FreshBites', 'UrbanCraft', 'GreenLeaf', 'PeakFit', 'TechNova', 'Bloom & Co'].map((name, i) => (
-              <span
-                key={name}
-                className="text-sm font-semibold tracking-wider text-gray-300 dark:text-zinc-700 uppercase hover:text-gray-500 dark:hover:text-zinc-500 transition-colors"
-                style={{ letterSpacing: `${0.1 + (i % 3) * 0.05}em` }}
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-        </section>
+                {/* Video + Overlay */}
+                <div
+                  className="animate-fade-in-up relative rounded-3xl overflow-hidden h-[400px] md:h-[500px]"
+                  style={{ animationDelay: '0.7s', opacity: 0 }}
+                >
+                  <video
+                    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_165750_358b1e72-c921-48b7-aaac-f200994f32fb.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                  <ActiveOverlay />
+                </div>
+              </section>
 
-          </>
-        ) : (
-          <Portfolio />
-        )}
+
+
+              {/* ── SERVICE BENEFITS ── */}
+              <section className="px-6 py-16 max-w-7xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2
+                    className="animate-fade-in-up text-3xl md:text-4xl font-normal tracking-tight dark:text-white mb-4"
+                    style={{ animationDelay: '0.1s', opacity: 0 }}
+                  >
+                    Why Businesses Choose Us
+                  </h2>
+                  <p
+                    className="animate-fade-in-up text-gray-600 dark:text-gray-400 max-w-xl mx-auto"
+                    style={{ animationDelay: '0.2s', opacity: 0 }}
+                  >
+                    We don't just build websites — we build digital growth engines.
+                  </p>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[
+                    {
+                      title: 'Built to Convert',
+                      desc: 'Every design decision is made to turn visitors into paying customers.',
+                      icon: TrendingUp,
+                    },
+                    {
+                      title: 'Fast & Mobile-First',
+                      desc: 'Lightning-fast load times and pixel-perfect on every device and screen.',
+                      icon: Globe,
+                    },
+                    {
+                      title: 'SEO-Ready Structure',
+                      desc: 'Built with clean code and optimised metadata to rank high on Google.',
+                      icon: Award,
+                    },
+                    {
+                      title: 'Affordable Plans',
+                      desc: 'Enterprise-quality websites at prices that work for small businesses.',
+                      icon: Briefcase,
+                    },
+                  ].map((benefit, i) => {
+                    const Icon = benefit.icon
+                    return (
+                      <div
+                        key={benefit.title}
+                        className="animate-fade-in-up p-6 rounded-2xl border border-gray-100 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-600 transition-colors group"
+                        style={{ animationDelay: `${0.1 + i * 0.1}s`, opacity: 0 }}
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-zinc-800 flex items-center justify-center mb-4 group-hover:bg-black dark:group-hover:bg-white transition-colors">
+                          <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-white dark:group-hover:text-black transition-colors" />
+                        </div>
+                        <h3 className="text-base font-semibold dark:text-white mb-2">{benefit.title}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{benefit.desc}</p>
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+
+
+
+            </>
+          } />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/website-design" element={<WebsiteDesign setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/logo-design" element={<LogoDesign setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/landing-page-design" element={<LandingPageDesign setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/website-development" element={<WebsiteDevelopment setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/social-media" element={<SocialMedia setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/seo" element={<SEO setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/google-ads" element={<GoogleAds setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/contact" element={<Contact setQuoteOpen={setQuoteOpen} />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+        </Routes>
 
         {/* ── FOOTER ── */}
         <footer className="border-t border-gray-100 dark:border-zinc-800 mt-12">
@@ -755,22 +703,49 @@ export default function App() {
               {/* Company Info */}
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <Star className="w-5 h-5 fill-black stroke-black dark:fill-white dark:stroke-white" />
-                  <span className="text-lg font-semibold dark:text-white">Prayush Studios</span>
+                  <img
+                    src="/logo.jpeg"
+                    alt="Prayush Studios"
+                    className="h-9 w-auto dark:invert dark:hue-rotate-180"
+                  />
+                  <span className="text-lg font-semibold tracking-tight dark:text-white">Prayush Studios</span>
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
                   We help small businesses and startups build powerful, affordable websites that drive real growth and results.
                 </p>
-                <div className="flex items-center gap-3">
-                  {['f', 'in', 'ig', 'yt'].map((s) => (
-                    <a
-                      key={s}
-                      href="#"
-                      className="w-8 h-8 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center text-xs font-semibold text-gray-500 dark:text-gray-400 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+                <div className="mt-6">
+                  <a
+                    href="https://www.instagram.com/prayushstudios?igsh=MTN6N2JkZjA1bDhkYQ%3D%3D&utm_source=qr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="url(#ig-gradient)"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      {s}
-                    </a>
-                  ))}
+                      <defs>
+                        <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#f09433" />
+                          <stop offset="25%" stopColor="#e6683c" />
+                          <stop offset="50%" stopColor="#dc2743" />
+                          <stop offset="75%" stopColor="#cc2366" />
+                          <stop offset="100%" stopColor="#bc1888" />
+                        </linearGradient>
+                      </defs>
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    @prayushstudios
+                  </a>
                 </div>
               </div>
 
@@ -778,11 +753,19 @@ export default function App() {
               <div>
                 <h4 className="text-sm font-semibold dark:text-white mb-4 uppercase tracking-wider">Services</h4>
                 <ul className="space-y-2.5">
-                  {['Website Design', 'Web Development', 'E-commerce Stores', 'SEO Services', 'Digital Marketing', 'Mobile Apps'].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                        {item}
-                      </a>
+                  {[
+                    { label: 'Website Design', href: '/website-design' },
+                    { label: 'Website Development', href: '/website-development' },
+                    { label: 'Landing Page Design', href: '/landing-page-design' },
+                    { label: 'Logo & Branding', href: '/logo-design' },
+                    { label: 'SEO Services', href: '/seo' },
+                    { label: 'Social Media', href: '/social-media' },
+                    { label: 'Google Ads', href: '/google-ads' },
+                  ].map((item) => (
+                    <li key={item.href}>
+                      <Link to={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                        {item.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -792,11 +775,17 @@ export default function App() {
               <div>
                 <h4 className="text-sm font-semibold dark:text-white mb-4 uppercase tracking-wider">Company</h4>
                 <ul className="space-y-2.5">
-                  {['About Us', 'Our Portfolio', 'Blog', 'Careers', 'Pricing', 'Privacy Policy'].map((item) => (
-                    <li key={item}>
-                      <a href="#" className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                        {item}
-                      </a>
+                  {[
+                    { label: 'Home', href: '/' },
+                    { label: 'Our Portfolio', href: '/portfolio' },
+                    { label: 'Contact Us', href: '/contact' },
+                    { label: 'Privacy Policy', href: '/privacy' },
+                    { label: 'Terms of Service', href: '/terms' },
+                  ].map((item) => (
+                    <li key={item.href}>
+                      <Link to={item.href} className="text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                        {item.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -806,11 +795,11 @@ export default function App() {
               <div>
                 <h4 className="text-sm font-semibold dark:text-white mb-4 uppercase tracking-wider">Get In Touch</h4>
                 <div className="space-y-3">
-                  <a href="tel:+919876543210" className="flex items-center gap-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                    <Phone className="w-4 h-4" /> +91 98765 43210
+                  <a href="tel:+917854827613" className="flex items-center gap-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                    <Phone className="w-4 h-4" /> +91 78548 27613
                   </a>
-                  <a href="mailto:hello@prayushstudios.com" className="flex items-center gap-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
-                    <Mail className="w-4 h-4" /> hello@prayushstudios.com
+                  <a href="mailto:prayushstudios@gmail.com" className="flex items-center gap-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+                    <Mail className="w-4 h-4" /> prayushstudios@gmail.com
                   </a>
                   <div className="flex items-start gap-2.5 text-sm text-gray-500 dark:text-gray-400">
                     <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
@@ -826,10 +815,13 @@ export default function App() {
                 © 2026 Prayush Studios. All rights reserved.
               </p>
               <div className="flex items-center gap-6">
-                {['Privacy', 'Terms', 'Sitemap'].map((link) => (
-                  <a key={link} href="#" className="text-xs text-gray-400 dark:text-zinc-600 hover:text-black dark:hover:text-white transition-colors">
-                    {link}
-                  </a>
+                {[
+                  { label: 'Privacy', href: '/privacy' },
+                  { label: 'Terms', href: '/terms' },
+                ].map((link) => (
+                  <Link key={link.href} to={link.href} className="text-xs text-gray-400 dark:text-zinc-600 hover:text-black dark:hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -839,7 +831,7 @@ export default function App() {
 
       {/* ── WHATSAPP FLOATING BUTTON ── */}
       <a
-        href="https://wa.me/919876543210?text=Hi%20Prayush%20Studios%2C%20I%20need%20a%20website%20for%20my%20business"
+        href="https://wa.me/917854827613?text=Hi%20Prayush%20Studios%2C%20I%20need%20a%20website%20for%20my%20business"
         target="_blank"
         rel="noopener noreferrer"
         className="animate-whatsapp-pulse fixed bottom-6 left-6 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-30"
