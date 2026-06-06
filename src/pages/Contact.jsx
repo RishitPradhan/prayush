@@ -79,40 +79,24 @@ export default function Contact({ setQuoteOpen }) {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer re_emq6fDyR_P9TUj371zyXSHrVZfY1H7tBy',
-        },
-        body: JSON.stringify({
-          from: 'onboarding@resend.dev',
-          to: 'prayushstudios@gmail.com',
-          subject: `New Enquiry from ${formData.name} — ${formData.service || 'General'}`,
-          html: `
-            <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${formData.name}</p>
-            <p><strong>Email:</strong> ${formData.email}</p>
-            <p><strong>Phone:</strong> ${formData.phone || 'Not provided'}</p>
-            <p><strong>Service Required:</strong> ${formData.service}</p>
-            <hr/>
-            <p><strong>Message:</strong></p>
-            <p>${formData.message.replace(/\n/g, '<br/>')}</p>
-          `,
-        }),
-      })
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.message || 'Failed to send message.')
-      }
+      const messageText = `*New Contact Inquiry*\n\n` +
+        `*Name:* ${formData.name}\n` +
+        `*Email:* ${formData.email}\n` +
+        `*Phone:* ${formData.phone || 'Not provided'}\n` +
+        `*Service:* ${formData.service || 'General'}\n\n` +
+        `*Project Message:*\n${formData.message}`
+
+      const whatsappUrl = `https://wa.me/917854827613?text=${encodeURIComponent(messageText)}`
+      
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
       setSubmitted(true)
     } catch (err) {
-      setError(err.message || 'Something went wrong. Please try again or email us directly.')
+      setError(err.message || 'Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }

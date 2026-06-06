@@ -257,7 +257,51 @@ function NavDropdown({ item, isOpen, onToggle, onClose }) {
    QUOTE FORM COMPONENT
    ──────────────────────────────────────── */
 function QuoteForm({ isOpen, onClose }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: '',
+  })
+  const [loading, setLoading] = useState(false)
+
   if (!isOpen) return null
+
+  function handleChange(e) {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const messageText = `*New Consultation Request*\n\n` +
+        `*Name:* ${formData.name}\n` +
+        `*Email:* ${formData.email}\n` +
+        `*Phone:* ${formData.phone || 'Not provided'}\n` +
+        `*Service:* ${formData.service || 'General'}\n\n` +
+        `*Project Details:*\n${formData.message}`
+
+      const whatsappUrl = `https://wa.me/917854827613?text=${encodeURIComponent(messageText)}`
+      
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+      
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: '',
+      })
+      onClose()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-black/30 dark:bg-black/50 z-40" onClick={onClose}></div>
@@ -269,11 +313,15 @@ function QuoteForm({ isOpen, onClose }) {
               <X className="w-5 h-5 dark:text-gray-300" />
             </button>
           </div>
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
               <input
                 type="text"
+                name="name"
+                required
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="John Doe"
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all"
               />
@@ -282,6 +330,10 @@ function QuoteForm({ isOpen, onClose }) {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
               <input
                 type="email"
+                name="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="john@business.com"
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all"
               />
@@ -290,13 +342,22 @@ function QuoteForm({ isOpen, onClose }) {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
               <input
                 type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
                 placeholder="+91 78548 27613"
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Service Required</label>
-              <select className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all">
+              <select
+                name="service"
+                required
+                value={formData.service}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all"
+              >
                 <option value="">Select a service</option>
                 <option>Website Design</option>
                 <option>Web Development</option>
@@ -309,17 +370,22 @@ function QuoteForm({ isOpen, onClose }) {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Details</label>
               <textarea
+                name="message"
+                required
                 rows={4}
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Tell us about your project..."
                 className="w-full px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-sm dark:text-white focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent outline-none transition-all resize-none"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-black dark:bg-white text-white dark:text-black py-3 rounded-lg text-sm font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer flex items-center justify-center gap-2"
+              disabled={loading}
+              className="w-full bg-black dark:bg-white text-white dark:text-black py-3 rounded-lg text-sm font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
             >
               <Send className="w-4 h-4" />
-              Submit Request
+              {loading ? 'Submitting...' : 'Submit Request'}
             </button>
           </form>
         </div>
